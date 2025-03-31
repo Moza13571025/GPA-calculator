@@ -30,3 +30,42 @@ allButtons.forEach((button) => {
     e.preventDefault();
   });
 });
+
+//根據所選的成績變換背景顏色
+let allSelects = document.querySelectorAll("select"); //回傳NodeList
+allSelects.forEach((e) => {
+  e.addEventListener("change", (e) => {
+    changeColor(e.target);
+  });
+});
+
+function changeColor(target) {
+  if (target.value == "A" || target.value == "A-") {
+    target.style.backgroundColor = "lightgreen";
+    target.style.color = "black";
+  } else if (
+    target.value == "B" ||
+    target.value == "B-" ||
+    target.value == "B+"
+  ) {
+    target.style.backgroundColor = "yellow";
+    target.style.color = "black";
+  } else if (
+    target.value == "C" ||
+    target.value == "C-" ||
+    target.value == "C+"
+  ) {
+    target.style.backgroundColor = "orange";
+  } else if (
+    target.value == "D" ||
+    target.value == "D-" ||
+    target.value == "D+"
+  ) {
+    target.style.backgroundColor = "red";
+  } else if (target.value == "F") {
+    target.style.backgroundColor = "gray";
+    target.style.color = "white";
+  } else {
+    target.style.backgroundColor = "white";
+  }
+}
