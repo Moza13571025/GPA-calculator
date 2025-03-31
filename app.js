@@ -22,3 +22,11 @@ window.addEventListener("keypress", (e) => {
     e.preventDefault();
   }
 });
+
+//防止表單內部的按鈕提交表單
+let allButtons = document.querySelectorAll("button");
+allButtons.forEach((button) => {
+  button.addEventListener("click", (e) => {
+    e.preventDefault();
+  });
+});
