@@ -35,9 +35,18 @@ allButtons.forEach((button) => {
 let allSelects = document.querySelectorAll("select"); //回傳NodeList
 allSelects.forEach((e) => {
   e.addEventListener("change", (e) => {
+    setGPA();
     changeColor(e.target);
   });
 });
+
+//當用戶改變credits輸入框的值，GPA更新
+let credits = document.querySelectorAll(".class-credit")
+credits.forEach((credit)=>{
+  credit.addEventListener("change",()=>{
+    setGPA();
+  })
+})
 
 function changeColor(target) {
   if (target.value == "A" || target.value == "A-") {
@@ -68,4 +77,60 @@ function changeColor(target) {
   } else {
     target.style.backgroundColor = "white";
   }
+}
+
+function convertor(grade) {
+  switch (grade) {
+    case "A":
+      return 4.0;
+    case "A-":
+      return 3.7;
+    case "B+":
+      return 3.4;
+    case "B":
+      return 3.0;
+    case "B-":
+      return 2.7;
+    case "C+":
+      return 2.4;
+    case "C":
+      return 2.0;
+    case "C-":
+      return 1.7;
+    case "D+":
+      return 1.4;
+    case "D":
+      return 1.0;
+    case "D-":
+      return 0.7;
+    case "F":
+      return 0.0;
+    default:
+      return 0;
+  }
+}
+
+function setGPA() {
+  let formLength = document.querySelectorAll("form").length;
+  let credits = document.querySelectorAll(".class-credit");
+  let selects = document.querySelectorAll(".select");
+  let sum = 0; //計算GPA之分子
+  let creditSum = 0; //計算GPA之分母
+
+  for (let i = 0; i < credits.length; i++) {
+    if (!isNaN(credits[i].valueAsNumber)) creditSum += credits[i].valueAsNumber;
+  }
+
+  for (let i = 0; i < formLength; i++) {
+    if (!isNaN(credits[i].valueAsNumber))
+      sum += convertor(selects[i].value) * credits[i].valueAsNumber;
+  }
+
+  if (creditSum === 0) {
+    result = 0;
+  } else {
+    result = sum / creditSum;
+  }
+
+  document.getElementById("result-gpa").innerText = result.toFixed(2);
 }
