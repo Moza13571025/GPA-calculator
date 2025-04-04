@@ -141,6 +141,11 @@ body section.main-part div.result h2#result-gpa {
   font-weight: bold;
 }
 
+.remove {
+  transform: scale(0);
+  transition: all 0.5s ease;
+}
+
 @keyframes border_color {
   0% {
     border-color: red;
@@ -158,5 +163,13 @@ body section.main-part div.result h2#result-gpa {
   }
   to {
     transform: scale(1);
+  }
+}
+@keyframes scaleDown {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0);
   }
 }/*# sourceMappingURL=style.css.map */

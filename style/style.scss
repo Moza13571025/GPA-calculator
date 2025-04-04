@@ -152,6 +152,11 @@ body {
   }
 }
 
+.remove {
+  transform: scale(0);
+  transition: all 0.5s ease;
+}
+
 @keyframes border_color {
   0% {
     border-color: red;
@@ -170,5 +175,14 @@ body {
   }
   to {
     transform: scale(1);
+  }
+}
+
+@keyframes scaleDown {
+    from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0);
   }
 }

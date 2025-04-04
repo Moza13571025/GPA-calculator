@@ -234,7 +234,7 @@ addButton.addEventListener("click", () => {
   newSelect.addEventListener("change", (e) => {
     //e不能省略
     setGPA();
-    changeColor(e.target)
+    changeColor(e.target);
   });
 
   //垃圾桶按鈕
@@ -245,13 +245,38 @@ addButton.addEventListener("click", () => {
   newITag.classList.add("fa-trash");
   newTrashButton.appendChild(newITag);
 
+  //避免預設行為：點擊垃圾桶按鈕會重新刷新頁面。
+  newTrashButton.addEventListener("click", (e) => {
+    // console.log(e.target);
+    e.preventDefault();
+    e.target.parentElement.parentElement.style.animation = "scaleDown 0.5s ease forwards";
+    e.target.parentElement.parentElement.addEventListener("animationend", (e) => {
+      e.target.remove();
+      setGPA();
+    });
+  });
+
   newDiv.appendChild(newInput1);
   newDiv.appendChild(newInput2);
   newDiv.appendChild(newInput3);
   newDiv.appendChild(newSelect);
   newDiv.appendChild(newTrashButton);
   newForm.appendChild(newDiv);
-  newForm.style.animation = "scaleUp 0.5s ease forwards"
+  newForm.style.animation = "scaleUp 0.5s ease forwards";
 
   document.querySelector(".all-inputs").appendChild(newForm);
+});
+
+let allTrash = document.querySelectorAll(".trash-button");
+allTrash.forEach((trash) => {
+  trash.addEventListener("click", (e) => {
+    e.target.parentElement.parentElement.classList.add("remove");
+  });
+});
+allTrash.forEach((e) => {
+  let form = e.parentElement.parentElement;
+  form.addEventListener("transitionend", () => {
+    form.remove();
+    setGPA();
+  });
 });
