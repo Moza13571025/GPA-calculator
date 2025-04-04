@@ -89,6 +89,9 @@ body section.main-part h1 {
 body section.main-part p {
   font-size: 1.15rem;
 }
+body section.main-part div.all-inputs {
+  width: 80dvw;
+}
 body section.main-part div.all-inputs form input,
 body section.main-part div.all-inputs form select {
   font-size: 1.05rem;
@@ -147,5 +150,13 @@ body section.main-part div.result h2#result-gpa {
   }
   66% {
     border-color: yellow;
+  }
+}
+@keyframes scaleUp {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
   }
 }/*# sourceMappingURL=style.css.map */
