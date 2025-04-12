@@ -249,11 +249,15 @@ addButton.addEventListener("click", () => {
   newTrashButton.addEventListener("click", (e) => {
     // console.log(e.target);
     e.preventDefault();
-    e.target.parentElement.parentElement.style.animation = "scaleDown 0.5s ease forwards";
-    e.target.parentElement.parentElement.addEventListener("animationend", (e) => {
-      e.target.remove();
-      setGPA();
-    });
+    e.target.parentElement.parentElement.style.animation =
+      "scaleDown 0.5s ease forwards";
+    e.target.parentElement.parentElement.addEventListener(
+      "animationend",
+      (e) => {
+        e.target.remove();
+        setGPA();
+      }
+    );
   });
 
   newDiv.appendChild(newInput1);
@@ -280,3 +284,102 @@ allTrash.forEach((e) => {
     setGPA();
   });
 });
+
+//排序功能
+let btn1 = document.querySelector(".sort-descending");
+let btn2 = document.querySelector(".sort-ascending");
+
+//排序演算法函式
+function merge(a1, a2) {
+  let result = [];
+  let i = 0;
+  let j = 0;
+
+  while (i < a1.length && j < a2.length) {
+    if (a1[i].class_grade_number > a2[j].class_grade_number) {
+      result.push(a2[j]);
+      j++;
+    } else {
+      result.push(a1[i]);
+      i++;
+    }
+  }
+
+  while (i < a1.length) {
+    result.push(a1[i]);
+    i++;
+  }
+  while (j < a2.length) {
+    result.push(a2[j]);
+    j++;
+  }
+
+  return result;
+}
+
+function mergeSort(arr) {
+  if (arr.length == 0) {
+    return;
+  }
+
+  if (arr.length == 1) {
+    return arr;
+  } else {
+    let middle = Math.floor(arr.length / 2);
+    let left = arr.slice(0, middle);
+    let right = arr.slice(middle, arr.length);
+    return merge(mergeSort(left), mergeSort(right));
+  }
+}
+
+//DOM操作
+btn1.addEventListener("click", () => {
+  handleSorting("descending");
+});
+
+btn2.addEventListener("click", () => {
+  handleSorting("ascending");
+});
+
+function handleSorting(direction) {
+  let graders = document.querySelectorAll(".grader");
+  let objectArray = []; //存放每一門class object
+
+  //1.建立objectArray
+  for (let i = 0; i < graders.length; i++) {
+    let class_category = graders[i].children[0].value;
+    let class_number = graders[i].children[1].value;
+    let class_credit = graders[i].children[2].value;
+    let class_grade = graders[i].children[3].value;
+    let class_object = {
+      //建立物件儲存上述資料
+      class_category,
+      class_number,
+      class_credit,
+      class_grade,
+    };
+    if (
+      //如果任一格沒填資料，則不參與排序
+      !(
+        (class_category === "") &
+        (class_number === "") &
+        (class_credit === "") &
+        (class_grade === "")
+      )
+    ) {
+      objectArray.push(class_object);
+    }
+  }
+
+  //2.取得objectArray後，把成績換成數字
+  for (let i = 0; i < objectArray.length; i++) {
+    objectArray[i].class_grade_number = convertor(objectArray[i].class_grade);
+  }
+
+  //3.排序
+  objectArray = mergeSort(objectArray);
+  if (direction === "descending") {
+    objectArray = objectArray.reverse();
+  }
+  console.log(objectArray);
+}
