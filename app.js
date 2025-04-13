@@ -381,5 +381,75 @@ function handleSorting(direction) {
   if (direction === "descending") {
     objectArray = objectArray.reverse();
   }
-  console.log(objectArray);
+
+  //4.根據object array的內容，來更新網頁
+  let allInputs = document.querySelector(".all-inputs");
+  allInputs.innerHTML = "";
+
+  for (let i = 0; i < objectArray.length; i++) {
+    allInputs.innerHTML += `<form>
+          <div class="grader">
+            <input type="text" value=${objectArray[i].class_category} placeholder="class category" class="class-category" list="opt"><!--
+            --><input type="text" value=${objectArray[i].class_number} placeholder="class number" class="class-number"><!--
+            --><input type="number" value=${objectArray[i].class_credit} placeholder="credits" min="0" max="6" class="class-credit"><!--
+            --><select name="select" class="select">
+              <option value=""></option>
+              <option value="A">A</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B">B</option>
+              <option value="B-">B-</option>
+              <option value="C+">C+</option>
+              <option value="C">C</option>
+              <option value="C-">C-</option>
+              <option value="D+">D+</option>
+              <option value="D">D</option>
+              <option value="D-">D-</option>
+              <option value="F">F</option>
+            </select><!--
+            --><button class="trash-button"><i class="fas fa-trash"></i></button>
+          </div>
+        </form>`;
+  }
+  //4.1以javaScript更改select
+  graders = document.querySelectorAll(".grader"); //回傳graders是靜態note list故重抓
+  for (let i = 0; i < objectArray.length; i++) {
+    graders[i].children[3].value = objectArray[i].class_grade;
+  }
+
+  //4.1.1:(新增的innerHTML)select事件監聽
+  allSelects = document.querySelectorAll("select"); //靜態NodeList
+  allSelects.forEach((e) => {
+    changeColor(e); //排序後新增的innerHTML先轉換顏色
+    e.addEventListener("change", (e) => {
+      //為新增後的元素補上原有功能
+      setGPA();
+      changeColor(e.target);
+    });
+  });
+
+  //4.1.2:(新增的innerHTML)input.credits事件監聽
+  allCredits = document.querySelectorAll(".class-credit");
+  allCredits.forEach((credit) => {
+    credit.addEventListener("change", () => {
+      setGPA();
+    });
+  });
+
+  //4.1.2:(新增的innerHTML)垃圾桶按鈕功能
+  allTrashs = document.querySelectorAll(".trash-button");
+  allTrashs.forEach((trash) => {
+    trash.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.target.parentElement.parentElement.style.animation =
+        "scaleDown 0.5s ease forwards";
+      e.target.parentElement.parentElement.addEventListener(
+        "animationend",
+        (e) => {
+          e.target.remove();
+          setGPA();
+        }
+      );
+    });
+  });
 }
